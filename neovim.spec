@@ -1,3 +1,14 @@
+Name:           neovim
+Version:        0.1.7
+Release:        5%{?dist}
+
+License:        ASL 2.0
+Summary:        Vim-fork focused on extensibility and agility
+Url:            http://neovim.io
+
+Source0:        https://github.com/neovim/neovim/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Patch0:         neovim-0.1.7-bitop.patch
+
 BuildRequires:  cmake
 BuildRequires:  fdupes
 BuildRequires:  gettext
@@ -12,19 +23,10 @@ BuildRequires:  libtermkey-devel
 BuildRequires:  libuv-devel
 BuildRequires:  libvterm-devel
 BuildRequires:  unibilium-devel
-
-Name:           neovim
-Version:        0.1.7
-Release:        4%{?dist}
-
-License:        ASL 2.0
-Summary:        Vim-fork focused on extensibility and agility
-Url:            http://neovim.io
-
-Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:         neovim-0.1.7-bitop.patch
-
+Recommends:     python2-neovim
 Recommends:     python3-neovim
+# XSel provides access to the system clipboard
+Recommends:     xsel
 
 %description
 Neovim is a refactor - and sometimes redactor - in the tradition of
@@ -42,34 +44,29 @@ parts of Vim, without compromise, and more.
 %patch0 -p1 -b .neovim-0.1.7-bitop.patch
 
 %build
-mkdir -p obj
-pushd obj
-%cmake \
-    -DLUA_PRG=%{_bindir}/lua           \
-    -DUSE_BUNDLED=OFF                  \
-    -DLUAJIT_USE_BUNDLED=OFF           \
-    -DENABLE_JEMALLOC=ON               \
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo  \
-    %{_builddir}/%{name}-%{version}
+mkdir -p build
+pushd build
+%cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+       -DLUA_PRG=%{_bindir}/lua \
+       ..
 
-make %{?_smp_mflags} VERBOSE=1
+%make_build VERBOSE=1
 popd
 
 %install
-pushd obj
-make install DESTDIR=%{buildroot}
+pushd build
+%make_install
 popd
 
 %fdupes %{buildroot}%{_datadir}/
 %find_lang nvim
 
 %files -f nvim.lang
-%defattr(-,root,root)
 %license LICENSE
 %doc BACKERS.md CONTRIBUTING.md README.md
 %{_bindir}/nvim
 
-%{_mandir}/man1/nvim.1.gz
+%{_mandir}/man1/nvim.1*
 
 %dir %{_datadir}/nvim
 
@@ -1425,6 +1422,12 @@ popd
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor
 
 %changelog
+* Thu Dec 08 2016 Filip Szymański <fszymanski at, fedoraproject.org> - 0.1.7-5
+- Add recommends for python2-neovim and xsel
+- Remove unused CMake options
+- Use %%make_build and %%make_install macros
+- Remove unnecessary %%defattr directive
+
 * Mon Dec 05 2016 Andreas Schneider <asn@redhat.com> - 0.1.7-4
 - Set license file correctly
 

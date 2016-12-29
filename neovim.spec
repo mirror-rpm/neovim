@@ -8,7 +8,7 @@ Url:            http://neovim.io
 
 Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:        sysinit.vim
-Source2:        template.spec
+Source2:        spec-template
 Patch0:         neovim-0.1.7-bitop.patch
 
 BuildRequires:  cmake

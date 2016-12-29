@@ -1,12 +1,14 @@
 Name:           neovim
 Version:        0.1.7
-Release:        5%{?dist}
+Release:        6%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
 Url:            http://neovim.io
 
-Source0:        https://github.com/neovim/neovim/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{version}.tar.gz
+Source1:        sysinit.vim
+Source2:        template.spec
 Patch0:         neovim-0.1.7-bitop.patch
 
 BuildRequires:  cmake
@@ -58,6 +60,9 @@ pushd build
 %make_install
 popd
 
+install -p -m 644 %SOURCE1 %{buildroot}%{_datadir}/nvim/sysinit.vim
+install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
+
 %fdupes %{buildroot}%{_datadir}/
 %find_lang nvim
 
@@ -69,6 +74,8 @@ popd
 %{_mandir}/man1/nvim.1*
 
 %dir %{_datadir}/nvim
+%{_datadir}/nvim/sysinit.vim
+%{_datadir}/nvim/template.spec
 
 %dir %{_datadir}/nvim/runtime
 %{_datadir}/nvim/runtime/bugreport.vim
@@ -1422,6 +1429,9 @@ popd
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor
 
 %changelog
+* Thu Dec 29 2016 Filip Szymański <fszymanski at, fedoraproject.org> - 0.1.7-6
+- Add RPM spec file template
+
 * Thu Dec 08 2016 Filip Szymański <fszymanski at, fedoraproject.org> - 0.1.7-5
 - Add recommends for python2-neovim and xsel
 - Remove unused CMake options

@@ -1,6 +1,6 @@
 Name:           neovim
 Version:        0.1.7
-Release:        6%{?dist}
+Release:        7%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -1429,6 +1429,9 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor
 
 %changelog
+* Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.1.7-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
 * Thu Dec 29 2016 Filip Szymański <fszymanski at, fedoraproject.org> - 0.1.7-6
 - Add RPM spec file template
 

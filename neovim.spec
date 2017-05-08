@@ -1,6 +1,6 @@
 Name:           neovim
-Version:        0.1.7
-Release:        7%{?dist}
+Version:        0.2.0
+Release:        1%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -106,6 +106,8 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %dir %{_datadir}/nvim/runtime/autoload
 %{_datadir}/nvim/runtime/autoload/gzip.vim
 %{_datadir}/nvim/runtime/autoload/ada.vim
+%{_datadir}/nvim/runtime/autoload/context.vim
+%{_datadir}/nvim/runtime/autoload/contextcomplete.vim
 %{_datadir}/nvim/runtime/autoload/paste.vim
 %{_datadir}/nvim/runtime/autoload/sqlcomplete.vim
 %{_datadir}/nvim/runtime/autoload/adacomplete.vim
@@ -189,7 +191,9 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/compiler/bcc.vim
 %{_datadir}/nvim/runtime/compiler/bdf.vim
 %{_datadir}/nvim/runtime/compiler/checkstyle.vim
+%{_datadir}/nvim/runtime/compiler/context.vim
 %{_datadir}/nvim/runtime/compiler/cs.vim
+%{_datadir}/nvim/runtime/compiler/csslint.vim
 %{_datadir}/nvim/runtime/compiler/cucumber.vim
 %{_datadir}/nvim/runtime/compiler/decada.vim
 %{_datadir}/nvim/runtime/compiler/dot.vim
@@ -204,6 +208,7 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/compiler/g95.vim
 %{_datadir}/nvim/runtime/compiler/gcc.vim
 %{_datadir}/nvim/runtime/compiler/gfortran.vim
+%{_datadir}/nvim/runtime/compiler/ghc.vim
 %{_datadir}/nvim/runtime/compiler/gnat.vim
 %{_datadir}/nvim/runtime/compiler/go.vim
 %{_datadir}/nvim/runtime/compiler/haml.vim
@@ -228,6 +233,7 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/compiler/pbx.vim
 %{_datadir}/nvim/runtime/compiler/perl.vim
 %{_datadir}/nvim/runtime/compiler/php.vim
+%{_datadir}/nvim/runtime/compiler/pylint.vim
 %{_datadir}/nvim/runtime/compiler/pyunit.vim
 %{_datadir}/nvim/runtime/compiler/rake.vim
 %{_datadir}/nvim/runtime/compiler/rspec.vim
@@ -371,6 +377,7 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/ftplugin/art.vim
 %{_datadir}/nvim/runtime/ftplugin/aspvbs.vim
 %{_datadir}/nvim/runtime/ftplugin/automake.vim
+%{_datadir}/nvim/runtime/ftplugin/awk.vim
 %{_datadir}/nvim/runtime/ftplugin/bdf.vim
 %{_datadir}/nvim/runtime/ftplugin/bst.vim
 %{_datadir}/nvim/runtime/ftplugin/btm.vim
@@ -516,6 +523,7 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/ftplugin/rst.vim
 %{_datadir}/nvim/runtime/ftplugin/ruby.vim
 %{_datadir}/nvim/runtime/ftplugin/sass.vim
+%{_datadir}/nvim/runtime/ftplugin/scala.vim
 %{_datadir}/nvim/runtime/ftplugin/scheme.vim
 %{_datadir}/nvim/runtime/ftplugin/screen.vim
 %{_datadir}/nvim/runtime/ftplugin/scss.vim
@@ -585,6 +593,7 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/indent/cmake.vim
 %{_datadir}/nvim/runtime/indent/cobol.vim
 %{_datadir}/nvim/runtime/indent/config.vim
+%{_datadir}/nvim/runtime/indent/context.vim
 %{_datadir}/nvim/runtime/indent/cpp.vim
 %{_datadir}/nvim/runtime/indent/cs.vim
 %{_datadir}/nvim/runtime/indent/css.vim
@@ -629,6 +638,7 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/indent/mail.vim
 %{_datadir}/nvim/runtime/indent/make.vim
 %{_datadir}/nvim/runtime/indent/matlab.vim
+%{_datadir}/nvim/runtime/indent/mf.vim
 %{_datadir}/nvim/runtime/indent/mma.vim
 %{_datadir}/nvim/runtime/indent/mp.vim
 %{_datadir}/nvim/runtime/indent/objc.vim
@@ -653,6 +663,7 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/indent/rst.vim
 %{_datadir}/nvim/runtime/indent/ruby.vim
 %{_datadir}/nvim/runtime/indent/sass.vim
+%{_datadir}/nvim/runtime/indent/scala.vim
 %{_datadir}/nvim/runtime/indent/scheme.vim
 %{_datadir}/nvim/runtime/indent/scss.vim
 %{_datadir}/nvim/runtime/indent/sdl.vim
@@ -689,6 +700,8 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/keymap/accents.vim
 %{_datadir}/nvim/runtime/keymap/arabic.vim
 %{_datadir}/nvim/runtime/keymap/arabic_utf-8.vim
+%{_datadir}/nvim/runtime/keymap/armenian-eastern_utf-8.vim
+%{_datadir}/nvim/runtime/keymap/armenian-western_utf-8.vim
 %{_datadir}/nvim/runtime/keymap/belarusian-jcuken.vim
 %{_datadir}/nvim/runtime/keymap/bulgarian-bds.vim
 %{_datadir}/nvim/runtime/keymap/bulgarian-phonetic.vim
@@ -716,6 +729,7 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/keymap/hebrewp_iso-8859-8.vim
 %{_datadir}/nvim/runtime/keymap/hebrewp_utf-8.vim
 %{_datadir}/nvim/runtime/keymap/kana.vim
+%{_datadir}/nvim/runtime/keymap/kazakh-jcuken.vim
 %{_datadir}/nvim/runtime/keymap/lithuanian-baltic.vim
 %{_datadir}/nvim/runtime/keymap/magyar_utf-8.vim
 %{_datadir}/nvim/runtime/keymap/mongolian_utf-8.vim
@@ -729,6 +743,7 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/keymap/polish-slash_utf-8.vim
 %{_datadir}/nvim/runtime/keymap/russian-dvorak.vim
 %{_datadir}/nvim/runtime/keymap/russian-jcuken.vim
+%{_datadir}/nvim/runtime/keymap/russian-jcukenmac.vim
 %{_datadir}/nvim/runtime/keymap/russian-jcukenwin.vim
 %{_datadir}/nvim/runtime/keymap/russian-yawerty.vim
 %{_datadir}/nvim/runtime/keymap/serbian-latin.vim
@@ -750,7 +765,9 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/keymap/thaana.vim
 %{_datadir}/nvim/runtime/keymap/ukrainian-dvorak.vim
 %{_datadir}/nvim/runtime/keymap/ukrainian-jcuken.vim
+%{_datadir}/nvim/runtime/keymap/vietnamese-telex_utf-8.vim
 %{_datadir}/nvim/runtime/keymap/vietnamese-viqr_utf-8.vim
+%{_datadir}/nvim/runtime/keymap/vietnamese-vni_utf-8.vim
 
 %dir %{_datadir}/nvim/runtime/pack
 %dir %{_datadir}/nvim/runtime/pack/dist
@@ -780,6 +797,7 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/pack/dist/opt/swapmouse/plugin/swapmouse.vim
 
 %dir %{_datadir}/nvim/runtime/plugin
+%{_datadir}/nvim/runtime/plugin/gui_shim.vim
 %{_datadir}/nvim/runtime/plugin/gzip.vim
 %{_datadir}/nvim/runtime/plugin/health.vim
 %{_datadir}/nvim/runtime/plugin/man.vim
@@ -1252,6 +1270,7 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/syntax/sas.vim
 %{_datadir}/nvim/runtime/syntax/sass.vim
 %{_datadir}/nvim/runtime/syntax/sather.vim
+%{_datadir}/nvim/runtime/syntax/scala.vim
 %{_datadir}/nvim/runtime/syntax/scheme.vim
 %{_datadir}/nvim/runtime/syntax/scilab.vim
 %{_datadir}/nvim/runtime/syntax/screen.vim
@@ -1429,6 +1448,9 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor
 
 %changelog
+* Mon May 08 2017 Andreas Schneider <asn@redhat.com> - 0.2.0-1
+- resolves: #1447481 - Update to 0.2.0
+
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.1.7-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 

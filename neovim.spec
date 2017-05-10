@@ -12,6 +12,7 @@ Source2:        spec-template
 Patch0:         neovim-0.1.7-bitop.patch
 
 BuildRequires:  cmake
+BuildRequires:  desktop-file-utils
 BuildRequires:  fdupes
 BuildRequires:  gettext
 BuildRequires:  gperf
@@ -63,6 +64,11 @@ popd
 install -p -m 644 %SOURCE1 %{buildroot}%{_datadir}/nvim/sysinit.vim
 install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 
+desktop-file-install --dir=%{buildroot}%{_datadir}/applications \
+    runtime/nvim.desktop
+install -d -m0755 %{buildroot}%{_datadir}/pixmaps
+install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
+
 %fdupes %{buildroot}%{_datadir}/
 %find_lang nvim
 
@@ -72,6 +78,8 @@ install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
 %{_bindir}/nvim
 
 %{_mandir}/man1/nvim.1*
+%{_datadir}/applications/nvim.desktop
+%{_datadir}/pixmaps/nvim.png
 
 %dir %{_datadir}/nvim
 %{_datadir}/nvim/sysinit.vim

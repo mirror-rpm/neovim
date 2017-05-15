@@ -1,6 +1,6 @@
 Name:           neovim
 Version:        0.2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -26,10 +26,17 @@ BuildRequires:  libtermkey-devel
 BuildRequires:  libuv-devel
 BuildRequires:  libvterm-devel
 BuildRequires:  unibilium-devel
+%if 0%{?el7}
+BuildRequires:  lua-bit32
+Requires:       lua-bit32
+# bz #1451143
+ExcludeArch:    ppc64 ppc64le
+%else
 Recommends:     python2-neovim
 Recommends:     python3-neovim
 # XSel provides access to the system clipboard
 Recommends:     xsel
+%endif
 
 %description
 Neovim is a refactor - and sometimes redactor - in the tradition of
@@ -1456,6 +1463,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor
 
 %changelog
+* Mon May 15 2017 Michel Alexandre Salim <salimma@fedoraproject.org> - 0.2.0-2
+- Adjust spec for building on epel7
+
 * Mon May 08 2017 Andreas Schneider <asn@redhat.com> - 0.2.0-1
 - resolves: #1447481 - Update to 0.2.0
 

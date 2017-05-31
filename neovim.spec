@@ -1,6 +1,6 @@
 Name:           neovim
 Version:        0.2.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -10,6 +10,8 @@ Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{v
 Source1:        sysinit.vim
 Source2:        spec-template
 Patch0:         neovim-0.1.7-bitop.patch
+# fix build issue on ppc64
+Patch1:         neovim-0.2.0-gcc-prototype.patch
 
 BuildRequires:  cmake
 BuildRequires:  desktop-file-utils
@@ -29,8 +31,6 @@ BuildRequires:  unibilium-devel
 %if 0%{?el7}
 BuildRequires:  lua-bit32
 Requires:       lua-bit32
-# bz #1451143
-ExcludeArch:    ppc64 ppc64le
 %else
 Recommends:     python2-neovim
 Recommends:     python3-neovim
@@ -49,9 +49,7 @@ excisions, Neovim is Vim. It is built for users who want the good
 parts of Vim, without compromise, and more.
 
 %prep
-%setup -q
-
-%patch0 -p1 -b .neovim-0.1.7-bitop.patch
+%autosetup -p1
 
 %build
 mkdir -p build
@@ -1463,6 +1461,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor
 
 %changelog
+* Wed May 31 2017 Than Ngo <than@redhat.com> 0.2.0-3
+- fixed bz#1451143, ppc64/le build failure
+
 * Mon May 15 2017 Michel Alexandre Salim <salimma@fedoraproject.org> - 0.2.0-2
 - Adjust spec for building on epel7
 

@@ -1,0 +1,38 @@
+diff -up neovim-0.2.0/src/nvim/ex_cmds.c.than neovim-0.2.0/src/nvim/ex_cmds.c
+--- neovim-0.2.0/src/nvim/ex_cmds.c.than	2017-05-31 10:58:05.669558647 +0200
++++ neovim-0.2.0/src/nvim/ex_cmds.c	2017-05-31 11:03:07.759568456 +0200
+@@ -103,6 +103,8 @@ typedef kvec_t(MatchedLine) MatchedLineV
+ # include "ex_cmds.c.generated.h"
+ #endif
+ 
++bool do_sub_msg(bool count_only);
++
+ /*
+  * ":ascii" and "ga".
+  */
+diff -up neovim-0.2.0/src/nvim/normal.c.than neovim-0.2.0/src/nvim/normal.c
+--- neovim-0.2.0/src/nvim/normal.c.than	2017-05-31 11:04:39.969572665 +0200
++++ neovim-0.2.0/src/nvim/normal.c	2017-05-31 11:09:43.669582843 +0200
+@@ -61,6 +61,22 @@
+ #include "nvim/os/time.h"
+ #include "nvim/os/input.h"
+ 
++bool
++find_decl (
++    char_u *ptr,
++    size_t len,
++    bool locally,
++    bool thisblock,
++    int flags_arg
++);
++
++bool
++get_visual_text (
++    cmdarg_T *cap,
++    char_u **pp,
++    size_t *lenp
++);
++
+ typedef struct normal_state {
+   VimState state;
+   linenr_T conceal_old_cursor_line;

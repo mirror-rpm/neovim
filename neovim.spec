@@ -1,6 +1,6 @@
 Name:           neovim
 Version:        0.2.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -1461,6 +1461,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor
 
 %changelog
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Wed May 31 2017 Than Ngo <than@redhat.com> 0.2.0-3
 - fixed bz#1451143, ppc64/le build failure
 

@@ -1,8 +1,8 @@
-Index: neovim-0.1.7/CMakeLists.txt
+Index: neovim-0.2.1/CMakeLists.txt
 ===================================================================
---- neovim-0.1.7.orig/CMakeLists.txt
-+++ neovim-0.1.7/CMakeLists.txt
-@@ -386,7 +386,7 @@ endforeach()
+--- neovim-0.2.1.orig/CMakeLists.txt
++++ neovim-0.2.1/CMakeLists.txt
+@@ -433,7 +433,7 @@ endforeach()
  
  # Find Lua interpreter
  include(LuaHelpers)
@@ -11,13 +11,13 @@ Index: neovim-0.1.7/CMakeLists.txt
  if(NOT LUA_PRG)
    foreach(CURRENT_LUA_PRG luajit lua5.1 lua5.2 lua)
      # If LUA_PRG is set find_program() will not search
-Index: neovim-0.1.7/src/nvim/ex_cmds.lua
+Index: neovim-0.2.1/src/nvim/ex_cmds.lua
 ===================================================================
---- neovim-0.1.7.orig/src/nvim/ex_cmds.lua
-+++ neovim-0.1.7/src/nvim/ex_cmds.lua
+--- neovim-0.2.1.orig/src/nvim/ex_cmds.lua
++++ neovim-0.2.1/src/nvim/ex_cmds.lua
 @@ -1,4 +1,4 @@
--bit = require 'bit'
-+bit = require 'bit32'
+-local bit = require 'bit'
++local bit = require 'bit32'
  
  -- Description of the values below is contained in ex_cmds_defs.h file.
  local RANGE      =    0x001

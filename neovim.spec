@@ -32,8 +32,8 @@ BuildRequires:  unibilium-devel
 BuildRequires:  lua-bit32
 Requires:       lua-bit32
 %else
-Recommends:     python2-neovim
-Recommends:     python3-neovim
+Suggests:       python2-neovim
+Suggests:       python3-neovim
 # XSel provides access to the system clipboard
 Recommends:     xsel
 %endif

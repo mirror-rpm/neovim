@@ -11,7 +11,7 @@ Source1:        sysinit.vim
 Source2:        spec-template
 Patch0:         neovim-0.1.7-bitop.patch
 # fix build issue on ppc64
-#Patch1:         neovim-0.2.0-gcc-prototype.patch
+Patch1:         neovim-0.2.0-gcc-prototype.patch
 
 BuildRequires:  cmake
 BuildRequires:  desktop-file-utils

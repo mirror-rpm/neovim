@@ -1,5 +1,5 @@
 Name:           neovim
-Version:        0.2.1
+Version:        0.2.2
 Release:        1%{?dist}
 
 License:        ASL 2.0
@@ -105,6 +105,7 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/menu.vim
 %{_datadir}/nvim/runtime/mswin.vim
 %{_datadir}/nvim/runtime/optwin.vim
+%{_datadir}/nvim/runtime/rgb.txt
 %{_datadir}/nvim/runtime/scripts.vim
 %{_datadir}/nvim/runtime/synmenu.vim
 
@@ -155,6 +156,7 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 
 %dir %{_datadir}/nvim/runtime/autoload/provider
 %{_datadir}/nvim/runtime/autoload/provider/clipboard.vim
+%{_datadir}/nvim/runtime/autoload/provider/node.vim
 %{_datadir}/nvim/runtime/autoload/provider/python.vim
 %{_datadir}/nvim/runtime/autoload/provider/python3.vim
 %{_datadir}/nvim/runtime/autoload/provider/pythonx.vim
@@ -1489,6 +1491,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor
 
 %changelog
+* Sat Dec 23 2017 Andreas Schneider <asn@redhat.com> - 0.2.2-1
+- resolves: #1510899 - Update to version 0.2.2
+
 * Wed Nov 08 2017 Andreas Schneider <asn@redhat.com> - 0.2.1-1
 - resolves: #1510762 - Update to version 0.2.1
 

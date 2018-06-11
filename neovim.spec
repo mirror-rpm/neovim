@@ -1,6 +1,6 @@
 Name:           neovim
-Version:        0.2.2
-Release:        3%{?dist}
+Version:        0.3.0
+Release:        1%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -10,8 +10,6 @@ Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{v
 Source1:        sysinit.vim
 Source2:        spec-template
 Patch0:         neovim-0.1.7-bitop.patch
-# fix build issue on ppc64
-Patch1:         neovim-0.2.0-gcc-prototype.patch
 
 BuildRequires:  cmake
 BuildRequires:  desktop-file-utils
@@ -150,9 +148,8 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/autoload/xmlcomplete.vim
 %{_datadir}/nvim/runtime/autoload/zip.vim
 
-%dir %{_datadir}/nvim/runtime/autoload/remote
-%{_datadir}/nvim/runtime/autoload/remote/define.vim
-%{_datadir}/nvim/runtime/autoload/remote/host.vim
+%dir %{_datadir}/nvim/runtime/autoload/dist
+%{_datadir}/nvim/runtime/autoload/dist/ft.vim
 
 %dir %{_datadir}/nvim/runtime/autoload/provider
 %{_datadir}/nvim/runtime/autoload/provider/clipboard.vim
@@ -162,6 +159,10 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/autoload/provider/pythonx.vim
 %{_datadir}/nvim/runtime/autoload/provider/ruby.vim
 %{_datadir}/nvim/runtime/autoload/provider/script_host.rb
+
+%dir %{_datadir}/nvim/runtime/autoload/remote
+%{_datadir}/nvim/runtime/autoload/remote/define.vim
+%{_datadir}/nvim/runtime/autoload/remote/host.vim
 
 %dir %{_datadir}/nvim/runtime/autoload/xml
 %{_datadir}/nvim/runtime/autoload/xml/xsl.vim
@@ -269,6 +270,7 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/doc/arabic.txt
 %{_datadir}/nvim/runtime/doc/autocmd.txt
 %{_datadir}/nvim/runtime/doc/change.txt
+%{_datadir}/nvim/runtime/doc/channel.txt
 %{_datadir}/nvim/runtime/doc/cmdline.txt
 %{_datadir}/nvim/runtime/doc/debug.txt
 %{_datadir}/nvim/runtime/doc/deprecated.txt
@@ -791,6 +793,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/keymap/vietnamese-viqr_utf-8.vim
 %{_datadir}/nvim/runtime/keymap/vietnamese-vni_utf-8.vim
 
+%dir %{_datadir}/nvim/runtime/lua
+%{_datadir}/nvim/runtime/lua/man.lua
+
 %dir %{_datadir}/nvim/runtime/macros
 %{_datadir}/nvim/runtime/macros/editexisting.vim
 %{_datadir}/nvim/runtime/macros/justify.vim
@@ -833,7 +838,6 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/pack/dist/opt/vimball/doc/vimball.txt
 
 %dir %{_datadir}/nvim/runtime/plugin
-%{_datadir}/nvim/runtime/plugin/gui_shim.vim
 %{_datadir}/nvim/runtime/plugin/gzip.vim
 %{_datadir}/nvim/runtime/plugin/health.vim
 %{_datadir}/nvim/runtime/plugin/man.vim
@@ -881,6 +885,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/print/latin1.ps
 %{_datadir}/nvim/runtime/print/mac-roman.ps
 %{_datadir}/nvim/runtime/print/prolog.ps
+
+%dir %{_datadir}/nvim/runtime/spell
+%{_datadir}/nvim/runtime/spell/en.utf-8.spl
 
 %dir %{_datadir}/nvim/runtime/syntax
 %{_datadir}/nvim/runtime/syntax/2html.vim
@@ -1486,11 +1493,17 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 
 %dir %{_datadir}/nvim/runtime/tutor
 %{_datadir}/nvim/runtime/tutor/tutor.tutor
+%{_datadir}/nvim/runtime/tutor/tutor.tutor.json
 
 %dir %{_datadir}/nvim/runtime/tutor/en
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor
+%{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Mon Jun 11 2018 Andreas Schneider <asn@redhat.com> - 0.3.0-1
+- Update to version 0.3.0
+- resolves: #1450624 - Set default python_host_prog
+
 * Sat May 26 2018 Andreas Schneider <asn@redhat.com> - 0.2.2-3
 - Rebuild against unibilium-2.0.0
 

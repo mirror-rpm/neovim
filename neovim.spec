@@ -1,6 +1,6 @@
 Name:           neovim
 Version:        0.3.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -35,6 +35,7 @@ Suggests:       (python3-neovim if python3)
 # XSel provides access to the system clipboard
 Recommends:     xsel
 %endif
+Requires:       jemalloc
 
 %description
 Neovim is a refactor - and sometimes redactor - in the tradition of
@@ -1500,6 +1501,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Tue Jun 19 2018 Andreas Schneider <asn@redhat.com> - 0.3.0-2
+- resolves: #1592474 - Add jemalloc as a requirement
+
 * Mon Jun 11 2018 Andreas Schneider <asn@redhat.com> - 0.3.0-1
 - Update to version 0.3.0
 - resolves: #1450624 - Set default python_host_prog

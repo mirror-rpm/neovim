@@ -11,6 +11,7 @@ Source1:        sysinit.vim
 Source2:        spec-template
 Patch0:         neovim-0.1.7-bitop.patch
 
+BuildRequires:  gcc-c++
 BuildRequires:  cmake
 BuildRequires:  desktop-file-utils
 BuildRequires:  fdupes

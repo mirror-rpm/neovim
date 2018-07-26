@@ -1,6 +1,8 @@
+%bcond_with jemalloc
+
 Name:           neovim
 Version:        0.3.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -21,7 +23,9 @@ BuildRequires:  gcc
 BuildRequires:  lua-devel
 BuildRequires:  lua-lpeg
 BuildRequires:  lua-mpack
+%if %{with jemalloc}
 BuildRequires:  jemalloc-devel
+%endif
 BuildRequires:  msgpack-devel >= 1.2.0
 BuildRequires:  libtermkey-devel
 BuildRequires:  libuv-devel
@@ -36,7 +40,6 @@ Suggests:       (python3-neovim if python3)
 # XSel provides access to the system clipboard
 Recommends:     xsel
 %endif
-Requires:       jemalloc
 
 %description
 Neovim is a refactor - and sometimes redactor - in the tradition of
@@ -57,6 +60,7 @@ pushd build
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
        -DPREFER_LUA=ON \
        -DLUA_PRG=%{_bindir}/lua \
+       -DENABLE_JEMALLOC=%{?with_jemalloc:ON}%{!?with_jemalloc:OFF} \
        ..
 
 %make_build VERBOSE=1
@@ -1502,6 +1506,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Fri Jul 27 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.3.0-4
+- Disable jemalloc
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.3.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 

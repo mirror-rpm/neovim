@@ -2,7 +2,7 @@
 
 Name:           neovim
 Version:        0.3.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -1506,6 +1506,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Tue Jul 31 2018 Florian Weimer <fweimer@redhat.com> - 0.3.0-6
+- Rebuild with fixed binutils
+
 * Fri Jul 27 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.3.0-5
 - Rebuild for new binutils
 

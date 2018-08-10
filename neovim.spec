@@ -1,8 +1,8 @@
 %bcond_with jemalloc
 
 Name:           neovim
-Version:        0.3.0
-Release:        6%{?dist}
+Version:        0.3.1
+Release:        1%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -1506,6 +1506,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Fri Aug 10 2018 Andreas Schneider <asn@redhat.com> - 0.3.1-1
+- Update to version 0.3.1
+
 * Tue Jul 31 2018 Florian Weimer <fweimer@redhat.com> - 0.3.0-6
 - Rebuild with fixed binutils
 

@@ -1,7 +1,7 @@
 %bcond_with jemalloc
 
 Name:           neovim
-Version:        0.3.2
+Version:        0.3.3
 Release:        1%{?dist}
 
 License:        ASL 2.0
@@ -1533,6 +1533,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Sun Jan 06 2019 Andreas Schneider <asn@redhat.com> - 0.3.3-1
+- Update to version 0.3.3
+
 * Wed Jan 02 2019 Andreas Schneider <asn@redhat.com> - 0.3.2-1
 - Update to version 0.3.2
 

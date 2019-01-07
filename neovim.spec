@@ -39,8 +39,6 @@ Suggests:       (python2-neovim if python2)
 Suggests:       (python3-neovim if python3)
 # XSel provides access to the system clipboard
 Recommends:     xsel
-# Needed to run nvim with the desktop file
-Recommends:     xterm
 %endif
 
 %description

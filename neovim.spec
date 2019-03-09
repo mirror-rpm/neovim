@@ -1,8 +1,9 @@
 %bcond_with jemalloc
+%bcond_without luajit
 
 Name:           neovim
-Version:        0.3.3
-Release:        3%{?dist}
+Version:        0.3.4
+Release:        1%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -11,7 +12,9 @@ Url:            http://neovim.io
 Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:        sysinit.vim
 Source2:        spec-template
+%if ! %{with luajit}
 Patch0:         neovim-0.1.7-bitop.patch
+%endif
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
@@ -20,9 +23,17 @@ BuildRequires:  fdupes
 BuildRequires:  gettext
 BuildRequires:  gperf
 BuildRequires:  gcc
+%if %{with luajit}
+# luajit implements version 5.1 of the lua language spec, so it needs the
+# compat versions of libs.
+BuildRequires:  luajit-devel
+BuildRequires:  compat-lua-lpeg
+BuildRequires:  compat-lua-mpack
+%else
 BuildRequires:  lua-devel
 BuildRequires:  lua-lpeg
 BuildRequires:  lua-mpack
+%endif
 %if %{with jemalloc}
 BuildRequires:  jemalloc-devel
 %endif
@@ -58,8 +69,8 @@ parts of Vim, without compromise, and more.
 mkdir -p build
 pushd build
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-       -DPREFER_LUA=ON \
-       -DLUA_PRG=%{_bindir}/lua \
+       -DPREFER_LUA=%{?with_luajit:OFF}%{!?with_luajit:ON} \
+       -DLUA_PRG=%{_bindir}/%{?with_luajit:luajit}%{!?with_luajit:lua} \
        -DENABLE_JEMALLOC=%{?with_jemalloc:ON}%{!?with_jemalloc:OFF} \
        ..
 
@@ -1531,6 +1542,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Wed Mar 06 2019 Aron Griffis <aron@scampersand.com> - 0.3.4-1
+- Update to version 0.3.4 with luajit, rhbz #1685781
+
 * Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.3.3-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 

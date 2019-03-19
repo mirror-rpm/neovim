@@ -1,5 +1,9 @@
 %bcond_with jemalloc
+%ifarch %{arm} %{ix86} x86_64 %{mips}
 %bcond_without luajit
+%else
+%bcond_with luajit
+%endif
 
 Name:           neovim
 Version:        0.3.4
@@ -12,9 +16,7 @@ Url:            http://neovim.io
 Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:        sysinit.vim
 Source2:        spec-template
-%if ! %{with luajit}
 Patch0:         neovim-0.1.7-bitop.patch
-%endif
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
@@ -63,7 +65,11 @@ excisions, Neovim is Vim. It is built for users who want the good
 parts of Vim, without compromise, and more.
 
 %prep
-%autosetup -p1
+%setup -q
+
+%if %{without luajit}
+%patch0 -p1 -b .bitop
+%endif
 
 %build
 mkdir -p build

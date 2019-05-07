@@ -6,7 +6,7 @@
 %endif
 
 Name:           neovim
-Version:        0.3.4
+Version:        0.3.5
 Release:        1%{?dist}
 
 License:        ASL 2.0
@@ -1548,6 +1548,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Tue May 07 2019 Andreas Schneider <asn@redhat.com> - 0.3.5-1
+- resolves: #1703867 - Update to version 0.3.5
+
 * Wed Mar 06 2019 Aron Griffis <aron@scampersand.com> - 0.3.4-1
 - Update to version 0.3.4 with luajit, rhbz #1685781
 

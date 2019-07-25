@@ -7,7 +7,7 @@
 
 Name:           neovim
 Version:        0.3.8
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -1548,6 +1548,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.3.8-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Fri Jul 05 2019 Andreas Schneider <asn@redhat.com> - 0.3.8-1
 - Update to version 0.3.8
 

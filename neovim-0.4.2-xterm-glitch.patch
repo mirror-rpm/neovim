@@ -1,0 +1,43 @@
+From ddd3363a428bad302f517fe5d433ce61b2b8de6c Mon Sep 17 00:00:00 2001
+From: Daniel Hahler <git@thequod.de>
+Date: Wed, 2 Oct 2019 04:07:10 +0200
+Subject: [PATCH] [release-0.4] patch_terminfo_bugs: TERM=xterm with non-xterm:
+ ignore smglr (#11132)
+
+"smglr" was added for TERM=xterm recently to the terminfo database,
+which causes display issues with terminals that use `TERM=xterm` by
+default for themselves, although not supporting it.
+
+This patch makes "smglr" to be ignored then.
+
+Fixes https://github.com/neovim/neovim/issues/10562
+---
+ src/nvim/tui/tui.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
+index 791756e5c52..c0845f9524e 100644
+--- a/src/nvim/tui/tui.c
++++ b/src/nvim/tui/tui.c
+@@ -93,7 +93,7 @@ typedef struct {
+   int out_fd;
+   bool scroll_region_is_full_screen;
+   bool can_change_scroll_region;
+-  bool can_set_lr_margin;
++  bool can_set_lr_margin;  // smglr
+   bool can_set_left_right_margin;
+   bool can_scroll;
+   bool can_erase_chars;
+@@ -1598,6 +1598,12 @@ static void patch_terminfo_bugs(TUIData *data, const char *term,
+       unibi_set_if_empty(ut, unibi_set_lr_margin, "\x1b[%i%p1%d;%p2%ds");
+       unibi_set_if_empty(ut, unibi_set_left_margin_parm, "\x1b[%i%p1%ds");
+       unibi_set_if_empty(ut, unibi_set_right_margin_parm, "\x1b[%i;%p2%ds");
++    } else {
++      // Fix things advertised via TERM=xterm, for non-xterm.
++      if (unibi_get_str(ut, unibi_set_lr_margin)) {
++        ILOG("Disabling smglr with TERM=xterm for non-xterm.");
++        unibi_set_str(ut, unibi_set_lr_margin, NULL);
++      }
+     }
+ 
+ #ifdef WIN32

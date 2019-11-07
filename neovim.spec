@@ -12,8 +12,8 @@
 %endif
 
 Name:           neovim
-Version:        0.4.2
-Release:        2%{?dist}
+Version:        0.4.3
+Release:        1%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -23,7 +23,6 @@ Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{v
 Source1:        sysinit.vim
 Source2:        spec-template
 Patch0:         neovim-0.1.7-bitop.patch
-Patch0001:      https://github.com/neovim/neovim/commit/ddd3363a428bad302f517fe5d433ce61b2b8de6c.patch#/neovim-0.4.2-xterm-glitch.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
@@ -81,8 +80,6 @@ parts of Vim, without compromise, and more.
 %if %{without luajit}
 %patch0 -p1 -b .bitop
 %endif
-
-%patch0001 -p1
 
 %build
 mkdir -p build
@@ -1590,6 +1587,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Thu Nov 07 2019 Andreas Schneider <asn@redhat.com> - 0.4.3-1
+- Update to version 0.4.3
+
 * Mon Oct 28 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.4.2-2
 - Fix glitches for terminals sayin xterm but not xterm
 

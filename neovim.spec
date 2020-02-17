@@ -13,7 +13,7 @@
 
 Name:           neovim
 Version:        0.4.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -1592,6 +1592,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Mon Feb 17 2020 Andreas Schneider <asn@redhat.com> - 0.4.3-4
+- Update patchset for -fno-common
+
 * Mon Feb 17 2020 Andreas Schneider <asn@redhat.com> - 0.4.3-3
 - resolves: #1799680 - Fix -fno-common issues
 

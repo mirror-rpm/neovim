@@ -1,7 +1,7 @@
 From 2a96bc336a86b5178019e9f4880f00e65f1e9b11 Mon Sep 17 00:00:00 2001
 From: Andreas Schneider <asn@cryptomilk.org>
 Date: Mon, 17 Feb 2020 16:33:55 +0100
-Subject: [PATCH 1/5] nvim:eval: Fix enum declaration for ListLenSpecials
+Subject: [PATCH 1/7] nvim:eval: Fix enum declaration for ListLenSpecials
 
 Instead of declaring an enum, this creates a global variable. As gcc10
 uses -fno-common by default, global variables declared with the same
@@ -44,7 +44,7 @@ index 008453b87..5afdedff7 100644
 From 1ff3e86b44204e15e07e152f353e389bd72836d7 Mon Sep 17 00:00:00 2001
 From: Andreas Schneider <asn@cryptomilk.org>
 Date: Mon, 17 Feb 2020 17:17:37 +0100
-Subject: [PATCH 2/5] nvim:viml: Fix enum declaration of ExprParserFlags
+Subject: [PATCH 2/7] nvim:viml: Fix enum declaration of ExprParserFlags
 
 Instead of declaring an enum, this creates a global variable. As gcc10
 uses -fno-common by default, global variables declared with the same
@@ -87,7 +87,7 @@ index 23e172da7..838a74227 100644
 From 400111a478b9f522ee98f06bda4660226961806f Mon Sep 17 00:00:00 2001
 From: Andreas Schneider <asn@cryptomilk.org>
 Date: Mon, 17 Feb 2020 16:36:21 +0100
-Subject: [PATCH 3/5] nvim: Fix enum declaration of RemapValues
+Subject: [PATCH 3/7] nvim: Fix enum declaration of RemapValues
 
 Instead of declaring an enum, this creates a global variable. As gcc10
 uses -fno-common by default, global variables declared with the same
@@ -124,76 +124,54 @@ index 01f60ccf4..f0b52079a 100644
 2.25.0
 
 
-From 8c74252287b68d3da778d2a5412044890913cc38 Mon Sep 17 00:00:00 2001
+From f870d61a336756a71e719f89752be796fcee45ea Mon Sep 17 00:00:00 2001
 From: Andreas Schneider <asn@cryptomilk.org>
 Date: Mon, 17 Feb 2020 16:40:37 +0100
-Subject: [PATCH 4/5] nvim:msgpack: Correctly set up MultiQueue
- *ch_before_blocking_events
+Subject: [PATCH 4/7] nvim:msgpack: Correctly set up global
+ ch_before_blocking_events
 
 gcc10 builds with -fno-common by default. This mean you can't define
 a global variable with the same name twice.
 
 See also https://bugzilla.redhat.com/show_bug.cgi?id=1799680
 ---
- src/nvim/msgpack_rpc/channel.c | 2 ++
- src/nvim/msgpack_rpc/channel.h | 6 ------
- src/nvim/os/input.c            | 5 +++++
- 3 files changed, 7 insertions(+), 6 deletions(-)
+ src/nvim/msgpack_rpc/channel.h | 2 +-
+ src/nvim/os/input.c            | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/src/nvim/msgpack_rpc/channel.c b/src/nvim/msgpack_rpc/channel.c
-index 92ca29209..64f9694a2 100644
---- a/src/nvim/msgpack_rpc/channel.c
-+++ b/src/nvim/msgpack_rpc/channel.c
-@@ -41,6 +41,8 @@
- static PMap(cstr_t) *event_strings = NULL;
- static msgpack_sbuffer out_buffer;
- 
-+extern MultiQueue *ch_before_blocking_events;
-+
- #ifdef INCLUDE_GENERATED_DECLARATIONS
- # include "msgpack_rpc/channel.c.generated.h"
- #endif
 diff --git a/src/nvim/msgpack_rpc/channel.h b/src/nvim/msgpack_rpc/channel.h
-index 9ff5abdc5..c0aeaee7a 100644
+index 9ff5abdc5..90e1c7d48 100644
 --- a/src/nvim/msgpack_rpc/channel.h
 +++ b/src/nvim/msgpack_rpc/channel.h
-@@ -12,12 +12,6 @@
- 
- #define METHOD_MAXLEN 512
- 
--/// HACK: os/input.c drains this queue immediately before blocking for input.
--///       Events on this queue are async-safe, but they need the resolved state
--///       of os_inchar(), so they are processed "just-in-time".
+@@ -15,7 +15,7 @@
+ /// HACK: os/input.c drains this queue immediately before blocking for input.
+ ///       Events on this queue are async-safe, but they need the resolved state
+ ///       of os_inchar(), so they are processed "just-in-time".
 -MultiQueue *ch_before_blocking_events;
--
--
++EXTERN MultiQueue *ch_before_blocking_events INIT(= NULL);
+ 
+ 
  #ifdef INCLUDE_GENERATED_DECLARATIONS
- # include "msgpack_rpc/channel.h.generated.h"
- #endif
 diff --git a/src/nvim/os/input.c b/src/nvim/os/input.c
-index c1580c5fc..3eacf6180 100644
+index c1580c5fc..b466b1bef 100644
 --- a/src/nvim/os/input.c
 +++ b/src/nvim/os/input.c
-@@ -28,6 +28,11 @@
- #define READ_BUFFER_SIZE 0xfff
- #define INPUT_BUFFER_SIZE (READ_BUFFER_SIZE * 4)
+@@ -1,6 +1,7 @@
+ // This is an open source non-commercial project. Dear PVS-Studio, please check
+ // it. PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
  
-+/// HACK: os/input.c drains this queue immediately before blocking for input.
-+///       Events on this queue are async-safe, but they need the resolved state
-+///       of os_inchar(), so they are processed "just-in-time".
-+MultiQueue *ch_before_blocking_events;
-+
- typedef enum {
-   kInputNone,
-   kInputAvail,
++#define EXTERN
+ #include <assert.h>
+ #include <string.h>
+ #include <stdbool.h>
 -- 
 2.25.0
 
 
-From 708a9f9354b1a619e9d185867b30808c675e96d2 Mon Sep 17 00:00:00 2001
+From 5471ef87c02fedf4b19870019e23da17e56a037f Mon Sep 17 00:00:00 2001
 From: Andreas Schneider <asn@cryptomilk.org>
 Date: Mon, 17 Feb 2020 17:29:12 +0100
-Subject: [PATCH 5/5] nvim: Define channels as extern
+Subject: [PATCH 5/7] nvim: Correctly setup global channels
 
 As gcc10 uses -fno-common by default, global variables declared with the
 same name more than once is not allowed anymore revealing this issue.
@@ -202,11 +180,24 @@ We need to define it as extern to access it.
 
 See also https://bugzilla.redhat.com/show_bug.cgi?id=1799680
 ---
+ src/nvim/channel.c | 1 -
  src/nvim/channel.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/src/nvim/channel.c b/src/nvim/channel.c
+index c66a0682e..5eb29a729 100644
+--- a/src/nvim/channel.c
++++ b/src/nvim/channel.c
+@@ -19,7 +19,6 @@
+ #include "nvim/ascii.h"
+ 
+ static bool did_stdio = false;
+-PMap(uint64_t) *channels = NULL;
+ 
+ /// next free id for a job or rpc channel
+ /// 1 is reserved for stdio channel
 diff --git a/src/nvim/channel.h b/src/nvim/channel.h
-index c733e276b..91e75d411 100644
+index c733e276b..9d26852ce 100644
 --- a/src/nvim/channel.h
 +++ b/src/nvim/channel.h
 @@ -85,7 +85,7 @@ struct Channel {
@@ -214,10 +205,94 @@ index c733e276b..91e75d411 100644
  };
  
 -EXTERN PMap(uint64_t) *channels;
-+extern PMap(uint64_t) *channels;
++EXTERN PMap(uint64_t) *channels INIT(= NULL);
  
  #ifdef INCLUDE_GENERATED_DECLARATIONS
  # include "channel.h.generated.h"
+-- 
+2.25.0
+
+
+From c04cf8ab059aeddc9bc74415bceb6d9de6948dcd Mon Sep 17 00:00:00 2001
+From: Andreas Schneider <asn@cryptomilk.org>
+Date: Mon, 17 Feb 2020 19:06:47 +0100
+Subject: [PATCH 6/7] nvim:os: Include ui.h and channel.h we define EXTERN
+
+If we define EXTERN as an emtpy macro we would duplicate the globals.
+---
+ src/nvim/os/input.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/src/nvim/os/input.c b/src/nvim/os/input.c
+index b466b1bef..cc551d104 100644
+--- a/src/nvim/os/input.c
++++ b/src/nvim/os/input.c
+@@ -1,20 +1,24 @@
+ // This is an open source non-commercial project. Dear PVS-Studio, please check
+ // it. PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+ 
+-#define EXTERN
+ #include <assert.h>
+ #include <string.h>
+ #include <stdbool.h>
+ 
+ #include <uv.h>
+ 
++// This needs to be included before we define EXTERN
++#include "nvim/ui.h"
++#include "nvim/msgpack_rpc/channel.h"
++
++#undef EXTERN
++#define EXTERN
+ #include "nvim/api/private/defs.h"
+ #include "nvim/os/input.h"
+ #include "nvim/event/loop.h"
+ #include "nvim/event/rstream.h"
+ #include "nvim/ascii.h"
+ #include "nvim/vim.h"
+-#include "nvim/ui.h"
+ #include "nvim/memory.h"
+ #include "nvim/keymap.h"
+ #include "nvim/mbyte.h"
+@@ -24,7 +28,6 @@
+ #include "nvim/main.h"
+ #include "nvim/misc1.h"
+ #include "nvim/state.h"
+-#include "nvim/msgpack_rpc/channel.h"
+ 
+ #define READ_BUFFER_SIZE 0xfff
+ #define INPUT_BUFFER_SIZE (READ_BUFFER_SIZE * 4)
+-- 
+2.25.0
+
+
+From 4ebbca53cfdba5313f86477c00536fd47993bfbb Mon Sep 17 00:00:00 2001
+From: Andreas Schneider <asn@cryptomilk.org>
+Date: Mon, 17 Feb 2020 18:04:01 +0100
+Subject: [PATCH 7/7] cmake: Check for -fno-common and use it if available
+
+---
+ CMakeLists.txt | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index de530bb4f..7c237781c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -306,6 +306,13 @@ if(UNIX)
+     add_compile_options(-fstack-protector --param ssp-buffer-size=4)
+     link_libraries(-fstack-protector --param ssp-buffer-size=4)
+   endif()
++
++  check_c_compiler_flag(-fno-common HAVE_FNO_COMMON)
++  if (HAVE_FNO_COMMON)
++    add_compile_options(-fno-common)
++  endif()
++endif()
++
+ endif()
+ 
+ check_c_compiler_flag(-fdiagnostics-color=auto HAS_DIAG_COLOR_FLAG)
 -- 
 2.25.0
 

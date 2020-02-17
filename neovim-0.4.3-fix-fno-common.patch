@@ -1,24 +1,13 @@
-From 2a96bc336a86b5178019e9f4880f00e65f1e9b11 Mon Sep 17 00:00:00 2001
-From: Andreas Schneider <asn@cryptomilk.org>
-Date: Mon, 17 Feb 2020 16:33:55 +0100
-Subject: [PATCH 1/7] nvim:eval: Fix enum declaration for ListLenSpecials
+Patches backported from https://github.com/neovim/neovim/pull/11890
 
-Instead of declaring an enum, this creates a global variable. As gcc10
-uses -fno-common by default, global variables declared with the same
-name more than once is not allowed anymore revealing this issue.
-
-Each time this header is included, we define the enum name as a global
-variable.
-
-See also https://bugzilla.redhat.com/show_bug.cgi?id=1799680
 ---
  src/nvim/eval/typval.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/src/nvim/eval/typval.h b/src/nvim/eval/typval.h
-index 008453b87..5afdedff7 100644
---- a/src/nvim/eval/typval.h
-+++ b/src/nvim/eval/typval.h
+Index: neovim-0.4.3/src/nvim/eval/typval.h
+===================================================================
+--- neovim-0.4.3.orig/src/nvim/eval/typval.h
++++ neovim-0.4.3/src/nvim/eval/typval.h
 @@ -33,7 +33,7 @@ typedef double float_T;
  enum { DO_NOT_FREE_CNT = (INT_MAX / 2) };
  
@@ -37,31 +26,10 @@ index 008453b87..5afdedff7 100644
  
  /// Maximal possible value of varnumber_T variable
  #define VARNUMBER_MAX INT64_MAX
--- 
-2.25.0
-
-
-From 1ff3e86b44204e15e07e152f353e389bd72836d7 Mon Sep 17 00:00:00 2001
-From: Andreas Schneider <asn@cryptomilk.org>
-Date: Mon, 17 Feb 2020 17:17:37 +0100
-Subject: [PATCH 2/7] nvim:viml: Fix enum declaration of ExprParserFlags
-
-Instead of declaring an enum, this creates a global variable. As gcc10
-uses -fno-common by default, global variables declared with the same
-name more than once is not allowed anymore revealing this issue.
-
-Each time this header is included, we define the enum name as a global
-variable.
-
-See also https://bugzilla.redhat.com/show_bug.cgi?id=1799680
----
- src/nvim/viml/parser/expressions.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/src/nvim/viml/parser/expressions.h b/src/nvim/viml/parser/expressions.h
-index 23e172da7..838a74227 100644
---- a/src/nvim/viml/parser/expressions.h
-+++ b/src/nvim/viml/parser/expressions.h
+Index: neovim-0.4.3/src/nvim/viml/parser/expressions.h
+===================================================================
+--- neovim-0.4.3.orig/src/nvim/viml/parser/expressions.h
++++ neovim-0.4.3/src/nvim/viml/parser/expressions.h
 @@ -326,7 +326,7 @@ struct expr_ast_node {
    } data;
  };
@@ -80,31 +48,10 @@ index 23e172da7..838a74227 100644
  
  /// AST error definition
  typedef struct {
--- 
-2.25.0
-
-
-From 400111a478b9f522ee98f06bda4660226961806f Mon Sep 17 00:00:00 2001
-From: Andreas Schneider <asn@cryptomilk.org>
-Date: Mon, 17 Feb 2020 16:36:21 +0100
-Subject: [PATCH 3/7] nvim: Fix enum declaration of RemapValues
-
-Instead of declaring an enum, this creates a global variable. As gcc10
-uses -fno-common by default, global variables declared with the same
-name more than once is not allowed anymore revealing this issue.
-
-Each time this header is included, we define the enum name as a global
-variable.
-
-See also https://bugzilla.redhat.com/show_bug.cgi?id=1799680
----
- src/nvim/getchar.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/src/nvim/getchar.h b/src/nvim/getchar.h
-index 01f60ccf4..f0b52079a 100644
---- a/src/nvim/getchar.h
-+++ b/src/nvim/getchar.h
+Index: neovim-0.4.3/src/nvim/getchar.h
+===================================================================
+--- neovim-0.4.3.orig/src/nvim/getchar.h
++++ neovim-0.4.3/src/nvim/getchar.h
 @@ -10,12 +10,12 @@
  /// Values for "noremap" argument of ins_typebuf()
  ///
@@ -120,29 +67,10 @@ index 01f60ccf4..f0b52079a 100644
  
  // Argument for flush_buffers().
  typedef enum {
--- 
-2.25.0
-
-
-From f870d61a336756a71e719f89752be796fcee45ea Mon Sep 17 00:00:00 2001
-From: Andreas Schneider <asn@cryptomilk.org>
-Date: Mon, 17 Feb 2020 16:40:37 +0100
-Subject: [PATCH 4/7] nvim:msgpack: Correctly set up global
- ch_before_blocking_events
-
-gcc10 builds with -fno-common by default. This mean you can't define
-a global variable with the same name twice.
-
-See also https://bugzilla.redhat.com/show_bug.cgi?id=1799680
----
- src/nvim/msgpack_rpc/channel.h | 2 +-
- src/nvim/os/input.c            | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/src/nvim/msgpack_rpc/channel.h b/src/nvim/msgpack_rpc/channel.h
-index 9ff5abdc5..90e1c7d48 100644
---- a/src/nvim/msgpack_rpc/channel.h
-+++ b/src/nvim/msgpack_rpc/channel.h
+Index: neovim-0.4.3/src/nvim/msgpack_rpc/channel.h
+===================================================================
+--- neovim-0.4.3.orig/src/nvim/msgpack_rpc/channel.h
++++ neovim-0.4.3/src/nvim/msgpack_rpc/channel.h
 @@ -15,7 +15,7 @@
  /// HACK: os/input.c drains this queue immediately before blocking for input.
  ///       Events on this queue are async-safe, but they need the resolved state
@@ -152,89 +80,11 @@ index 9ff5abdc5..90e1c7d48 100644
  
  
  #ifdef INCLUDE_GENERATED_DECLARATIONS
-diff --git a/src/nvim/os/input.c b/src/nvim/os/input.c
-index c1580c5fc..b466b1bef 100644
---- a/src/nvim/os/input.c
-+++ b/src/nvim/os/input.c
-@@ -1,6 +1,7 @@
- // This is an open source non-commercial project. Dear PVS-Studio, please check
- // it. PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
- 
-+#define EXTERN
- #include <assert.h>
- #include <string.h>
- #include <stdbool.h>
--- 
-2.25.0
-
-
-From 5471ef87c02fedf4b19870019e23da17e56a037f Mon Sep 17 00:00:00 2001
-From: Andreas Schneider <asn@cryptomilk.org>
-Date: Mon, 17 Feb 2020 17:29:12 +0100
-Subject: [PATCH 5/7] nvim: Correctly setup global channels
-
-As gcc10 uses -fno-common by default, global variables declared with the
-same name more than once is not allowed anymore revealing this issue.
-
-We need to define it as extern to access it.
-
-See also https://bugzilla.redhat.com/show_bug.cgi?id=1799680
----
- src/nvim/channel.c | 1 -
- src/nvim/channel.h | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/src/nvim/channel.c b/src/nvim/channel.c
-index c66a0682e..5eb29a729 100644
---- a/src/nvim/channel.c
-+++ b/src/nvim/channel.c
-@@ -19,7 +19,6 @@
- #include "nvim/ascii.h"
- 
- static bool did_stdio = false;
--PMap(uint64_t) *channels = NULL;
- 
- /// next free id for a job or rpc channel
- /// 1 is reserved for stdio channel
-diff --git a/src/nvim/channel.h b/src/nvim/channel.h
-index c733e276b..9d26852ce 100644
---- a/src/nvim/channel.h
-+++ b/src/nvim/channel.h
-@@ -85,7 +85,7 @@ struct Channel {
-   bool callback_scheduled;
- };
- 
--EXTERN PMap(uint64_t) *channels;
-+EXTERN PMap(uint64_t) *channels INIT(= NULL);
- 
- #ifdef INCLUDE_GENERATED_DECLARATIONS
- # include "channel.h.generated.h"
--- 
-2.25.0
-
-
-From c04cf8ab059aeddc9bc74415bceb6d9de6948dcd Mon Sep 17 00:00:00 2001
-From: Andreas Schneider <asn@cryptomilk.org>
-Date: Mon, 17 Feb 2020 19:06:47 +0100
-Subject: [PATCH 6/7] nvim:os: Include ui.h and channel.h we define EXTERN
-
-If we define EXTERN as an emtpy macro we would duplicate the globals.
----
- src/nvim/os/input.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/src/nvim/os/input.c b/src/nvim/os/input.c
-index b466b1bef..cc551d104 100644
---- a/src/nvim/os/input.c
-+++ b/src/nvim/os/input.c
-@@ -1,20 +1,24 @@
- // This is an open source non-commercial project. Dear PVS-Studio, please check
- // it. PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
- 
--#define EXTERN
- #include <assert.h>
- #include <string.h>
- #include <stdbool.h>
+Index: neovim-0.4.3/src/nvim/os/input.c
+===================================================================
+--- neovim-0.4.3.orig/src/nvim/os/input.c
++++ neovim-0.4.3/src/nvim/os/input.c
+@@ -7,13 +7,18 @@
  
  #include <uv.h>
  
@@ -254,7 +104,7 @@ index b466b1bef..cc551d104 100644
  #include "nvim/memory.h"
  #include "nvim/keymap.h"
  #include "nvim/mbyte.h"
-@@ -24,7 +28,6 @@
+@@ -23,7 +28,6 @@
  #include "nvim/main.h"
  #include "nvim/misc1.h"
  #include "nvim/state.h"
@@ -262,37 +112,44 @@ index b466b1bef..cc551d104 100644
  
  #define READ_BUFFER_SIZE 0xfff
  #define INPUT_BUFFER_SIZE (READ_BUFFER_SIZE * 4)
--- 
-2.25.0
-
-
-From 4ebbca53cfdba5313f86477c00536fd47993bfbb Mon Sep 17 00:00:00 2001
-From: Andreas Schneider <asn@cryptomilk.org>
-Date: Mon, 17 Feb 2020 18:04:01 +0100
-Subject: [PATCH 7/7] cmake: Check for -fno-common and use it if available
-
----
- CMakeLists.txt | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index de530bb4f..7c237781c 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -306,6 +306,13 @@ if(UNIX)
+Index: neovim-0.4.3/src/nvim/channel.c
+===================================================================
+--- neovim-0.4.3.orig/src/nvim/channel.c
++++ neovim-0.4.3/src/nvim/channel.c
+@@ -15,7 +15,6 @@
+ #include "nvim/ascii.h"
+ 
+ static bool did_stdio = false;
+-PMap(uint64_t) *channels = NULL;
+ 
+ /// next free id for a job or rpc channel
+ /// 1 is reserved for stdio channel
+Index: neovim-0.4.3/src/nvim/channel.h
+===================================================================
+--- neovim-0.4.3.orig/src/nvim/channel.h
++++ neovim-0.4.3/src/nvim/channel.h
+@@ -85,7 +85,7 @@ struct Channel {
+   bool callback_scheduled;
+ };
+ 
+-EXTERN PMap(uint64_t) *channels;
++EXTERN PMap(uint64_t) *channels INIT(= NULL);
+ 
+ #ifdef INCLUDE_GENERATED_DECLARATIONS
+ # include "channel.h.generated.h"
+Index: neovim-0.4.3/CMakeLists.txt
+===================================================================
+--- neovim-0.4.3.orig/CMakeLists.txt
++++ neovim-0.4.3/CMakeLists.txt
+@@ -312,6 +312,11 @@ if(UNIX)
+   elseif(HAS_FSTACK_PROTECTOR_FLAG)
      add_compile_options(-fstack-protector --param ssp-buffer-size=4)
-     link_libraries(-fstack-protector --param ssp-buffer-size=4)
    endif()
 +
 +  check_c_compiler_flag(-fno-common HAVE_FNO_COMMON)
 +  if (HAVE_FNO_COMMON)
 +    add_compile_options(-fno-common)
 +  endif()
-+endif()
-+
  endif()
  
  check_c_compiler_flag(-fdiagnostics-color=auto HAS_DIAG_COLOR_FLAG)
--- 
-2.25.0
-

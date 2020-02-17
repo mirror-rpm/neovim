@@ -1,0 +1,223 @@
+From 2a96bc336a86b5178019e9f4880f00e65f1e9b11 Mon Sep 17 00:00:00 2001
+From: Andreas Schneider <asn@cryptomilk.org>
+Date: Mon, 17 Feb 2020 16:33:55 +0100
+Subject: [PATCH 1/5] nvim:eval: Fix enum declaration for ListLenSpecials
+
+Instead of declaring an enum, this creates a global variable. As gcc10
+uses -fno-common by default, global variables declared with the same
+name more than once is not allowed anymore revealing this issue.
+
+Each time this header is included, we define the enum name as a global
+variable.
+
+See also https://bugzilla.redhat.com/show_bug.cgi?id=1799680
+---
+ src/nvim/eval/typval.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/nvim/eval/typval.h b/src/nvim/eval/typval.h
+index 008453b87..5afdedff7 100644
+--- a/src/nvim/eval/typval.h
++++ b/src/nvim/eval/typval.h
+@@ -33,7 +33,7 @@ typedef double float_T;
+ enum { DO_NOT_FREE_CNT = (INT_MAX / 2) };
+ 
+ /// Additional values for tv_list_alloc() len argument
+-enum {
++enum ListLenSpecials {
+   /// List length is not known in advance
+   ///
+   /// To be used when there is neither a way to know how many elements will be
+@@ -49,7 +49,7 @@ enum {
+   ///
+   /// To be used when it looks impractical to determine list length.
+   kListLenMayKnow = -3,
+-} ListLenSpecials;
++};
+ 
+ /// Maximal possible value of varnumber_T variable
+ #define VARNUMBER_MAX INT64_MAX
+-- 
+2.25.0
+
+
+From 1ff3e86b44204e15e07e152f353e389bd72836d7 Mon Sep 17 00:00:00 2001
+From: Andreas Schneider <asn@cryptomilk.org>
+Date: Mon, 17 Feb 2020 17:17:37 +0100
+Subject: [PATCH 2/5] nvim:viml: Fix enum declaration of ExprParserFlags
+
+Instead of declaring an enum, this creates a global variable. As gcc10
+uses -fno-common by default, global variables declared with the same
+name more than once is not allowed anymore revealing this issue.
+
+Each time this header is included, we define the enum name as a global
+variable.
+
+See also https://bugzilla.redhat.com/show_bug.cgi?id=1799680
+---
+ src/nvim/viml/parser/expressions.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/nvim/viml/parser/expressions.h b/src/nvim/viml/parser/expressions.h
+index 23e172da7..838a74227 100644
+--- a/src/nvim/viml/parser/expressions.h
++++ b/src/nvim/viml/parser/expressions.h
+@@ -326,7 +326,7 @@ struct expr_ast_node {
+   } data;
+ };
+ 
+-enum {
++enum ExprParserFlags {
+   /// Allow multiple expressions in a row: e.g. for :echo
+   ///
+   /// Parser will still parse only one of them though.
+@@ -345,7 +345,7 @@ enum {
+   //     viml_expressions_parser.c, nvim_parse_expression() flags parsing
+   //     alongside with its documentation and flag sets in check_parsing()
+   //     function in expressions parser functional and unit tests.
+-} ExprParserFlags;
++};
+ 
+ /// AST error definition
+ typedef struct {
+-- 
+2.25.0
+
+
+From 400111a478b9f522ee98f06bda4660226961806f Mon Sep 17 00:00:00 2001
+From: Andreas Schneider <asn@cryptomilk.org>
+Date: Mon, 17 Feb 2020 16:36:21 +0100
+Subject: [PATCH 3/5] nvim: Fix enum declaration of RemapValues
+
+Instead of declaring an enum, this creates a global variable. As gcc10
+uses -fno-common by default, global variables declared with the same
+name more than once is not allowed anymore revealing this issue.
+
+Each time this header is included, we define the enum name as a global
+variable.
+
+See also https://bugzilla.redhat.com/show_bug.cgi?id=1799680
+---
+ src/nvim/getchar.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/nvim/getchar.h b/src/nvim/getchar.h
+index 01f60ccf4..f0b52079a 100644
+--- a/src/nvim/getchar.h
++++ b/src/nvim/getchar.h
+@@ -10,12 +10,12 @@
+ /// Values for "noremap" argument of ins_typebuf()
+ ///
+ /// Also used for map->m_noremap and menu->noremap[].
+-enum {
++enum RemapValues {
+   REMAP_YES = 0,  ///< Allow remapping.
+   REMAP_NONE = -1,  ///< No remapping.
+   REMAP_SCRIPT = -2,  ///< Remap script-local mappings only.
+   REMAP_SKIP = -3,  ///< No remapping for first char.
+-} RemapValues;
++};
+ 
+ // Argument for flush_buffers().
+ typedef enum {
+-- 
+2.25.0
+
+
+From 8c74252287b68d3da778d2a5412044890913cc38 Mon Sep 17 00:00:00 2001
+From: Andreas Schneider <asn@cryptomilk.org>
+Date: Mon, 17 Feb 2020 16:40:37 +0100
+Subject: [PATCH 4/5] nvim:msgpack: Correctly set up MultiQueue
+ *ch_before_blocking_events
+
+gcc10 builds with -fno-common by default. This mean you can't define
+a global variable with the same name twice.
+
+See also https://bugzilla.redhat.com/show_bug.cgi?id=1799680
+---
+ src/nvim/msgpack_rpc/channel.c | 2 ++
+ src/nvim/msgpack_rpc/channel.h | 6 ------
+ src/nvim/os/input.c            | 5 +++++
+ 3 files changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/src/nvim/msgpack_rpc/channel.c b/src/nvim/msgpack_rpc/channel.c
+index 92ca29209..64f9694a2 100644
+--- a/src/nvim/msgpack_rpc/channel.c
++++ b/src/nvim/msgpack_rpc/channel.c
+@@ -41,6 +41,8 @@
+ static PMap(cstr_t) *event_strings = NULL;
+ static msgpack_sbuffer out_buffer;
+ 
++extern MultiQueue *ch_before_blocking_events;
++
+ #ifdef INCLUDE_GENERATED_DECLARATIONS
+ # include "msgpack_rpc/channel.c.generated.h"
+ #endif
+diff --git a/src/nvim/msgpack_rpc/channel.h b/src/nvim/msgpack_rpc/channel.h
+index 9ff5abdc5..c0aeaee7a 100644
+--- a/src/nvim/msgpack_rpc/channel.h
++++ b/src/nvim/msgpack_rpc/channel.h
+@@ -12,12 +12,6 @@
+ 
+ #define METHOD_MAXLEN 512
+ 
+-/// HACK: os/input.c drains this queue immediately before blocking for input.
+-///       Events on this queue are async-safe, but they need the resolved state
+-///       of os_inchar(), so they are processed "just-in-time".
+-MultiQueue *ch_before_blocking_events;
+-
+-
+ #ifdef INCLUDE_GENERATED_DECLARATIONS
+ # include "msgpack_rpc/channel.h.generated.h"
+ #endif
+diff --git a/src/nvim/os/input.c b/src/nvim/os/input.c
+index c1580c5fc..3eacf6180 100644
+--- a/src/nvim/os/input.c
++++ b/src/nvim/os/input.c
+@@ -28,6 +28,11 @@
+ #define READ_BUFFER_SIZE 0xfff
+ #define INPUT_BUFFER_SIZE (READ_BUFFER_SIZE * 4)
+ 
++/// HACK: os/input.c drains this queue immediately before blocking for input.
++///       Events on this queue are async-safe, but they need the resolved state
++///       of os_inchar(), so they are processed "just-in-time".
++MultiQueue *ch_before_blocking_events;
++
+ typedef enum {
+   kInputNone,
+   kInputAvail,
+-- 
+2.25.0
+
+
+From 708a9f9354b1a619e9d185867b30808c675e96d2 Mon Sep 17 00:00:00 2001
+From: Andreas Schneider <asn@cryptomilk.org>
+Date: Mon, 17 Feb 2020 17:29:12 +0100
+Subject: [PATCH 5/5] nvim: Define channels as extern
+
+As gcc10 uses -fno-common by default, global variables declared with the
+same name more than once is not allowed anymore revealing this issue.
+
+We need to define it as extern to access it.
+
+See also https://bugzilla.redhat.com/show_bug.cgi?id=1799680
+---
+ src/nvim/channel.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/nvim/channel.h b/src/nvim/channel.h
+index c733e276b..91e75d411 100644
+--- a/src/nvim/channel.h
++++ b/src/nvim/channel.h
+@@ -85,7 +85,7 @@ struct Channel {
+   bool callback_scheduled;
+ };
+ 
+-EXTERN PMap(uint64_t) *channels;
++extern PMap(uint64_t) *channels;
+ 
+ #ifdef INCLUDE_GENERATED_DECLARATIONS
+ # include "channel.h.generated.h"
+-- 
+2.25.0
+

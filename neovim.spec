@@ -13,7 +13,7 @@
 
 Name:           neovim
 Version:        0.4.3
-Release:        4%{?dist}
+Release:        5%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -23,7 +23,7 @@ Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{v
 Source1:        sysinit.vim
 Source2:        spec-template
 
-Patch0:         neovim-0.4.3-fix-fno-common.patch
+Patch0:         https://patch-diff.githubusercontent.com/raw/neovim/neovim/pull/11890.patch
 
 Patch1000:      neovim-0.1.7-bitop.patch
 
@@ -1592,6 +1592,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Sun Feb 23 2020 Andreas Schneider <asn@redhat.com> - 0.4.3-5
+- Update to upstream patchset for -fno-common
+
 * Mon Feb 17 2020 Andreas Schneider <asn@redhat.com> - 0.4.3-4
 - Update patchset for -fno-common
 

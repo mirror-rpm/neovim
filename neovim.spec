@@ -11,9 +11,11 @@
 %global luaver 5.3
 %endif
 
+%global luv_min_ver 1.30.0
+
 Name:           neovim
 Version:        0.4.3
-Release:        5%{?dist}
+Release:        6%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -40,22 +42,22 @@ BuildRequires:  gcc
 BuildRequires:  luajit-devel
 BuildRequires:  compat-lua-lpeg
 BuildRequires:  compat-lua-mpack
-BuildRequires:  lua5.1-luv-devel
-Requires:       lua5.1-luv
+BuildRequires:  lua5.1-luv-devel >= %{luv_min_ver}
+Requires:       lua5.1-luv >= %{luv_min_ver}
 %else
 BuildRequires:  lua-devel
 BuildRequires:  lua-lpeg
 BuildRequires:  lua-mpack
-BuildRequires:  lua-luv-devel
-Requires:       lua-luv
+BuildRequires:  lua-luv-devel >= %{luv_min_ver}
+Requires:       lua-luv >= %{luv_min_ver}
 %endif
 %if %{with jemalloc}
 BuildRequires:  jemalloc-devel
 %endif
 BuildRequires:  msgpack-devel >= 3.1.0
 BuildRequires:  libtermkey-devel
-BuildRequires:  libuv-devel >= 1.30
-BuildRequires:  libvterm-devel => 0.1.1
+BuildRequires:  libuv-devel >= 1.28.0
+BuildRequires:  libvterm-devel >= 0.1.1
 BuildRequires:  unibilium-devel
 %if 0%{?el7}
 BuildRequires:  lua-bit32
@@ -1592,6 +1594,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Sun Mar 22 2020 Michel Alexandre Salim <salimma@fedoraproject.org> - 0.4.3-6
+- Update build requirements
+
 * Sun Feb 23 2020 Andreas Schneider <asn@redhat.com> - 0.4.3-5
 - Update to upstream patchset for -fno-common
 

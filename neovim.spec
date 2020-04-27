@@ -40,8 +40,8 @@ BuildRequires:  gcc
 # luajit implements version 5.1 of the lua language spec, so it needs the
 # compat versions of libs.
 BuildRequires:  luajit-devel
-BuildRequires:  compat-lua-lpeg
-BuildRequires:  compat-lua-mpack
+BuildRequires:  lua5.1-lpeg
+BuildRequires:  lua5.1-mpack
 BuildRequires:  lua5.1-luv-devel >= %{luv_min_ver}
 Requires:       lua5.1-luv >= %{luv_min_ver}
 %else

@@ -85,23 +85,17 @@ parts of Vim, without compromise, and more.
 %endif
 
 %build
-mkdir -p build
-pushd build
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
        -DPREFER_LUA=%{?with_luajit:OFF}%{!?with_luajit:ON} \
        -DLUA_PRG=%{_bindir}/%{?with_luajit:luajit}%{!?with_luajit:lua} \
        -DENABLE_JEMALLOC=%{?with_jemalloc:ON}%{!?with_jemalloc:OFF} \
        -DLIBLUV_INCLUDE_DIR=%{_includedir}/lua-%{luaver} \
        -DLIBLUV_LIBRARY=%{_libdir}/lua/%{luaver}/luv.so \
-       ..
 
-%make_build VERBOSE=1
-popd
+%cmake_build
 
 %install
-pushd build
-%make_install
-popd
+%cmake_install
 
 install -p -m 644 %SOURCE1 %{buildroot}%{_datadir}/nvim/sysinit.vim
 install -p -m 644 %SOURCE2 %{buildroot}%{_datadir}/nvim/template.spec
@@ -1593,6 +1587,7 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 
 * Wed Aug 05 2020 Andreas Schneider <asn@redhat.com> - 0.4.4-1
 - Update to version 0.4.4
+- Use new cmake macros
 
 * Sat Aug 01 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.3-8
 - Second attempt - Rebuilt for

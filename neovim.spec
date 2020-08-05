@@ -14,8 +14,8 @@
 %global luv_min_ver 1.30.0
 
 Name:           neovim
-Version:        0.4.3
-Release:        8%{?dist}
+Version:        0.4.4
+Release:        1%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -24,8 +24,6 @@ Url:            https://neovim.io
 Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:        sysinit.vim
 Source2:        spec-template
-
-Patch0:         https://patch-diff.githubusercontent.com/raw/neovim/neovim/pull/11890.patch
 
 Patch1000:      neovim-0.1.7-bitop.patch
 
@@ -81,8 +79,6 @@ parts of Vim, without compromise, and more.
 
 %prep
 %setup -q
-
-%patch0 -p1
 
 %if %{without luajit}
 %patch1000 -p1 -b .bitop
@@ -1594,6 +1590,10 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+
+* Wed Aug 05 2020 Andreas Schneider <asn@redhat.com> - 0.4.4-1
+- Update to version 0.4.4
+
 * Sat Aug 01 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.3-8
 - Second attempt - Rebuilt for
   https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild

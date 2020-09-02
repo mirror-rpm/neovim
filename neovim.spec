@@ -15,7 +15,7 @@
 
 Name:           neovim
 Version:        0.4.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -49,6 +49,7 @@ BuildRequires:  lua-devel
 %if 0%{?fedora} >= 33
 # built-in bit32 removed in Lua 5.4
 BuildRequires:  lua-bit32
+Requires:       lua-bit32
 %endif
 BuildRequires:  lua-lpeg
 BuildRequires:  lua-mpack
@@ -64,6 +65,7 @@ BuildRequires:  libuv-devel >= 1.28.0
 BuildRequires:  libvterm-devel >= 0.1.1
 BuildRequires:  unibilium-devel
 %if 0%{?el7}
+# Lua 5.1 doesn't have bit32
 BuildRequires:  lua-bit32
 Requires:       lua-bit32
 %else
@@ -1591,6 +1593,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Tue Sep  1 2020 Michel Alexandre Salim <salimma@fedoraproject.org> - 0.4.4-3
+- When using Lua 5.4, also pull in lua-bit32 at installation
+
 * Mon Aug 31 2020 Michel Alexandre Salim <salimma@fedoraproject.org> - 0.4.4-2
 - Do not hardcode Lua version
 - Patch to support detecting Lua 5.4

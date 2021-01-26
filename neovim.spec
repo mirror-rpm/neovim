@@ -15,7 +15,7 @@
 
 Name:           neovim
 Version:        0.4.4
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -1593,6 +1593,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.4-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
 * Tue Sep  1 2020 Michel Alexandre Salim <salimma@fedoraproject.org> - 0.4.4-3
 - When using Lua 5.4, also pull in lua-bit32 at installation
 

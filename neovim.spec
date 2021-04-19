@@ -15,7 +15,7 @@
 
 Name:           neovim
 Version:        0.4.4
-Release:        4%{?dist}
+Release:        5%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -94,6 +94,9 @@ parts of Vim, without compromise, and more.
 %endif
 
 %build
+# set vars to make build reproducible; see config/CMakeLists.txt
+HOSTNAME=koji
+USERNAME=koji
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
        -DPREFER_LUA=%{?with_luajit:OFF}%{!?with_luajit:ON} \
        -DLUA_PRG=%{_bindir}/%{?with_luajit:luajit}%{!?with_luajit:lua} \
@@ -1593,6 +1596,10 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Mon Apr 19 2021 Andreas Schneider <asn@redhat.com> - 0.4.4-5
+- resolves: #1909495 - Load installed vim plugins
+- Make build reproducible
+
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 

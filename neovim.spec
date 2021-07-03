@@ -26,6 +26,7 @@ Source1:        sysinit.vim
 Source2:        spec-template
 
 Patch1000:      neovim-0.1.7-bitop.patch
+Patch1001:      neovim-lua5.4.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
@@ -89,6 +90,7 @@ parts of Vim, without compromise, and more.
 
 %if %{without luajit}
 %patch1000 -p1 -b .bitop
+%patch1001 -p1 -b .lua5.4
 %endif
 
 %build

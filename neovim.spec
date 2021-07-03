@@ -25,8 +25,6 @@ Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{v
 Source1:        sysinit.vim
 Source2:        spec-template
 
-# https://github.com/neovim/neovim/pull/12820
-Patch0:         neovim-0.4.4-findlua54.patch
 Patch1000:      neovim-0.1.7-bitop.patch
 
 BuildRequires:  gcc-c++
@@ -90,7 +88,6 @@ parts of Vim, without compromise, and more.
 %setup -q
 
 %if %{without luajit}
-%patch0 -p1 -b .findlua54
 %patch1000 -p1 -b .bitop
 %endif
 

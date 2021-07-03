@@ -64,6 +64,7 @@ BuildRequires:  libtermkey-devel
 BuildRequires:  libuv-devel >= 1.28.0
 BuildRequires:  libvterm-devel >= 0.1.1
 BuildRequires:  unibilium-devel
+BuildRequires:  libtree-sitter-devel
 %if 0%{?el7}
 # Lua 5.1 doesn't have bit32
 BuildRequires:  lua-bit32

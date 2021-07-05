@@ -15,7 +15,7 @@
 
 Name:           neovim
 Version:        0.5.0
-Release:        0%{?dist}
+Release:        1%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -43,17 +43,20 @@ BuildRequires:  lua5.1-lpeg
 BuildRequires:  lua5.1-mpack
 BuildRequires:  lua5.1-luv-devel >= %{luv_min_ver}
 Requires:       lua5.1-luv >= %{luv_min_ver}
+# else with luajit
 %else
 BuildRequires:  lua-devel
 %if 0%{?fedora} >= 33
 # built-in bit32 removed in Lua 5.4
 BuildRequires:  lua-bit32
 Requires:       lua-bit32
+# endif fedora >= 33
 %endif
 BuildRequires:  lua-lpeg
 BuildRequires:  lua-mpack
 BuildRequires:  lua-luv-devel >= %{luv_min_ver}
 Requires:       lua-luv >= %{luv_min_ver}
+# endif with luajit
 %endif
 %if %{with jemalloc}
 BuildRequires:  jemalloc-devel
@@ -61,19 +64,13 @@ BuildRequires:  jemalloc-devel
 BuildRequires:  msgpack-devel >= 3.1.0
 BuildRequires:  libtermkey-devel
 BuildRequires:  libuv-devel >= 1.28.0
-BuildRequires:  libvterm-devel >= 0.1.1
+BuildRequires:  libvterm-devel >= 0.1.4
 BuildRequires:  unibilium-devel
-BuildRequires:  libtree-sitter-devel
-%if 0%{?el7}
-# Lua 5.1 doesn't have bit32
-BuildRequires:  lua-bit32
-Requires:       lua-bit32
-%else
+BuildRequires:  libtree-sitter-devel >= 0.20.0
 Suggests:       (python2-neovim if python2)
 Suggests:       (python3-neovim if python3)
 # XSel provides access to the system clipboard
 Recommends:     xsel
-%endif
 
 %description
 Neovim is a refactor - and sometimes redactor - in the tradition of
@@ -1727,6 +1724,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Mon Jul 05 2021 Andreas Schneider <asn@redhat.com> - 0.5.0-1
+- Raise BuildRequires for some libraries
+
 * Sat Jul 03 2021 Andreas Schneider <asn@redhat.com> - 0.5.0-0
 - Update to version 0.5.0
   * https://github.com/neovim/neovim/releases/tag/v0.5.0

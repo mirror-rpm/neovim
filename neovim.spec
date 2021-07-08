@@ -15,7 +15,7 @@
 
 Name:           neovim
 Version:        0.5.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -115,6 +115,9 @@ install -d -m0755 %{buildroot}%{_datadir}/pixmaps
 install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 
 %fdupes %{buildroot}%{_datadir}/
+# Fix exec bits
+find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
+    -print -exec chmod -x '{}' \;
 %find_lang nvim
 
 %files -f nvim.lang
@@ -1724,6 +1727,9 @@ install -m0644 runtime/nvim.png %{buildroot}%{_datadir}/pixmaps/nvim.png
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Thu Jul 08 2021 Andreas Schneider <asn@redhat.com> - 0.5.0-2
+- Fixed execute bits of bat and awk files
+
 * Mon Jul 05 2021 Andreas Schneider <asn@redhat.com> - 0.5.0-1
 - Raise BuildRequires for some libraries
 

@@ -15,7 +15,7 @@
 
 Name:           neovim
 Version:        0.5.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -1727,6 +1727,9 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Thu Jul 22 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.5.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
 * Thu Jul 08 2021 Andreas Schneider <asn@redhat.com> - 0.5.0-2
 - Fixed execute bits of bat and awk files
 

@@ -5,13 +5,9 @@
 %bcond_with luajit
 %endif
 
-%if %{with luajit}
-%global luaver 5.1
-%else
-%global luaver %{lua_version}
-%endif
+%global lua_version 5.1
 
-%global luv_min_ver 1.30.0
+%global luv_min_ver 1.41.0
 
 Name:           neovim
 Version:        0.5.0
@@ -25,8 +21,8 @@ Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{v
 Source1:        sysinit.vim
 Source2:        spec-template
 
-Patch1000:      neovim-0.1.7-bitop.patch
-Patch1001:      neovim-lua5.4.patch
+Patch1000:      neovim-lua-bit32.patch
+Patch1001:      neovim-cmake-lua-5.1.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
@@ -39,25 +35,14 @@ BuildRequires:  gcc
 # luajit implements version 5.1 of the lua language spec, so it needs the
 # compat versions of libs.
 BuildRequires:  luajit-devel
+%else
+BuildRequires:  compat-lua
+BuildRequires:  compat-lua-devel
+# /with luajit
+%endif
 BuildRequires:  lua5.1-lpeg
 BuildRequires:  lua5.1-mpack
 BuildRequires:  lua5.1-luv-devel >= %{luv_min_ver}
-Requires:       lua5.1-luv >= %{luv_min_ver}
-# else with luajit
-%else
-BuildRequires:  lua-devel
-%if 0%{?fedora} >= 33
-# built-in bit32 removed in Lua 5.4
-BuildRequires:  lua-bit32
-Requires:       lua-bit32
-# endif fedora >= 33
-%endif
-BuildRequires:  lua-lpeg
-BuildRequires:  lua-mpack
-BuildRequires:  lua-luv-devel >= %{luv_min_ver}
-Requires:       lua-luv >= %{luv_min_ver}
-# endif with luajit
-%endif
 %if %{with jemalloc}
 BuildRequires:  jemalloc-devel
 %endif
@@ -71,6 +56,7 @@ Suggests:       (python2-neovim if python2)
 Suggests:       (python3-neovim if python3)
 # XSel provides access to the system clipboard
 Recommends:     xsel
+Requires:       lua5.1-luv >= %{luv_min_ver}
 
 %description
 Neovim is a refactor - and sometimes redactor - in the tradition of
@@ -86,8 +72,8 @@ parts of Vim, without compromise, and more.
 %setup -q
 
 %if %{without luajit}
-%patch1000 -p1 -b .bitop
-%patch1001 -p1 -b .lua5.4
+%patch1000 -p1
+%patch1001 -p1
 %endif
 
 %build
@@ -96,10 +82,10 @@ HOSTNAME=koji
 USERNAME=koji
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
        -DPREFER_LUA=%{?with_luajit:OFF}%{!?with_luajit:ON} \
-       -DLUA_PRG=%{_bindir}/%{?with_luajit:luajit}%{!?with_luajit:lua} \
+       -DLUA_PRG=%{_bindir}/%{?with_luajit:luajit}%{!?with_luajit:lua-5.1} \
        -DENABLE_JEMALLOC=%{?with_jemalloc:ON}%{!?with_jemalloc:OFF} \
-       -DLIBLUV_INCLUDE_DIR=%{_includedir}/lua-%{luaver} \
-       -DLIBLUV_LIBRARY=%{_libdir}/lua/%{luaver}/luv.so \
+       -DLIBLUV_INCLUDE_DIR=%{_includedir}/lua-%{lua_version} \
+       -DLIBLUV_LIBRARY=%{_libdir}/lua/%{lua_version}/luv.so \
 
 %cmake_build
 
@@ -1727,6 +1713,10 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Fri Jul 30 2021 Andreas Schneider <asn@redhat.com> - 0.5.0-3
+- resolves: rhbz#1983288 - Build with lua-5.1 on platforms where luajit is not
+  available
+
 * Thu Jul 22 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.5.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 

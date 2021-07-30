@@ -5,13 +5,25 @@
 %bcond_with luajit
 %endif
 
-%global lua_version 5.1
-
 %global luv_min_ver 1.41.0
+
+%if %{with luajit}
+%global luajit_version 2.1
+%global lua_prg %{_bindir}/luajit
+
+%global luv_include_dir %{_includedir}/luajit-%{luajit_version}
+%global luv_library %{_libdir}/luajit/%{luajit_version}/luv.so
+%else
+%global lua_version 5.1
+%global lua_prg %{_bindir}/lua-5.1
+
+%global luv_include_dir %{_includedir}/lua-%{lua_version}
+%global luv_library %{_libdir}/lua/%{lua_version}/luv.so
+%endif
 
 Name:           neovim
 Version:        0.5.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -35,16 +47,19 @@ BuildRequires:  gcc
 # luajit implements version 5.1 of the lua language spec, so it needs the
 # compat versions of libs.
 BuildRequires:  luajit-devel
+BuildRequires:  luajit2.1-luv-devel >= %{luv_min_ver}
+Requires:       luajit2.1-luv >= %{luv_min_ver}
 %else
 # lua5.1
 BuildRequires:  compat-lua
 BuildRequires:  compat-lua-devel
 BuildRequires:  lua5.1-bit32
+BuildRequires:  lua5.1-luv-devel >= %{luv_min_ver}
+Requires:       lua5.1-luv >= %{luv_min_ver}
 # /with luajit
 %endif
 BuildRequires:  lua5.1-lpeg
 BuildRequires:  lua5.1-mpack
-BuildRequires:  lua5.1-luv-devel >= %{luv_min_ver}
 %if %{with jemalloc}
 BuildRequires:  jemalloc-devel
 %endif
@@ -58,7 +73,6 @@ Suggests:       (python2-neovim if python2)
 Suggests:       (python3-neovim if python3)
 # XSel provides access to the system clipboard
 Recommends:     xsel
-Requires:       lua5.1-luv >= %{luv_min_ver}
 
 %description
 Neovim is a refactor - and sometimes redactor - in the tradition of
@@ -84,10 +98,10 @@ HOSTNAME=koji
 USERNAME=koji
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
        -DPREFER_LUA=%{?with_luajit:OFF}%{!?with_luajit:ON} \
-       -DLUA_PRG=%{_bindir}/%{?with_luajit:luajit}%{!?with_luajit:lua-5.1} \
+       -DLUA_PRG=%{lua_prg} \
        -DENABLE_JEMALLOC=%{?with_jemalloc:ON}%{!?with_jemalloc:OFF} \
-       -DLIBLUV_INCLUDE_DIR=%{_includedir}/lua-%{lua_version} \
-       -DLIBLUV_LIBRARY=%{_libdir}/lua/%{lua_version}/luv.so \
+       -DLIBLUV_INCLUDE_DIR=%{luv_include_dir} \
+       -DLIBLUV_LIBRARY=%{luv_library}
 
 %cmake_build
 
@@ -1715,6 +1729,9 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Fri Jul 30 2021 Andreas Schneider <asn@redhat.com> - 0.5.0-5
+- Build with luajit2.1-luv when we use luajit
+
 * Fri Jul 30 2021 Andreas Schneider <asn@redhat.com> - 0.5.0-4
 - resolves: rhbz#1983288 - Build with lua-5.1 on platforms where luajit is not
   available

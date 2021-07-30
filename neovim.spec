@@ -11,7 +11,7 @@
 
 Name:           neovim
 Version:        0.5.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -1713,7 +1713,7 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
-* Fri Jul 30 2021 Andreas Schneider <asn@redhat.com> - 0.5.0-3
+* Fri Jul 30 2021 Andreas Schneider <asn@redhat.com> - 0.5.0-4
 - resolves: rhbz#1983288 - Build with lua-5.1 on platforms where luajit is not
   available
 

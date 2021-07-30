@@ -36,8 +36,10 @@ BuildRequires:  gcc
 # compat versions of libs.
 BuildRequires:  luajit-devel
 %else
+# lua5.1
 BuildRequires:  compat-lua
 BuildRequires:  compat-lua-devel
+BuildRequires:  lua5.1-bit32
 # /with luajit
 %endif
 BuildRequires:  lua5.1-lpeg

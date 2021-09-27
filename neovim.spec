@@ -22,8 +22,8 @@
 %endif
 
 Name:           neovim
-Version:        0.5.0
-Release:        5%{?dist}
+Version:        0.5.1
+Release:        1%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -953,6 +953,7 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/lua/vim/uri.lua
 
 %dir %{_datadir}/nvim/runtime/lua/vim/lsp/
+%{_datadir}/nvim/runtime/lua/vim/lsp/_snippet.lua
 %{_datadir}/nvim/runtime/lua/vim/lsp/buf.lua
 %{_datadir}/nvim/runtime/lua/vim/lsp/codelens.lua  
 %{_datadir}/nvim/runtime/lua/vim/lsp/diagnostic.lua
@@ -1729,6 +1730,9 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Mon Sep 27 2021 Andreas Schneider <asn@redhat.com> - 0.5.1-1
+- Update to version 0.5.1
+
 * Fri Jul 30 2021 Andreas Schneider <asn@redhat.com> - 0.5.0-5
 - Build with luajit2.1-luv when we use luajit
 

@@ -1,5 +1,5 @@
 %bcond_with jemalloc
-%ifarch %{arm} %{ix86} x86_64 %{mips}
+%ifarch %{arm} %{ix86} x86_64 %{mips} aarch64
 %bcond_without luajit
 %else
 %bcond_with luajit
@@ -23,7 +23,7 @@
 
 Name:           neovim
 Version:        0.5.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -1730,6 +1730,9 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Thu Oct 28 2021 Andreas Schneider <asn@redhat.com> - 0.5.1-2
+- Use luajit also on aarch64
+
 * Mon Sep 27 2021 Andreas Schneider <asn@redhat.com> - 0.5.1-1
 - Update to version 0.5.1
 

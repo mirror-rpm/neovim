@@ -22,7 +22,7 @@
 %endif
 
 Name:           neovim
-Version:        0.6.0
+Version:        0.6.1
 Release:        1%{?dist}
 
 License:        ASL 2.0
@@ -497,6 +497,7 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/ftplugin/cfg.vim
 %{_datadir}/nvim/runtime/ftplugin/ch.vim
 %{_datadir}/nvim/runtime/ftplugin/changelog.vim
+%{_datadir}/nvim/runtime/ftplugin/checkhealth.vim
 %{_datadir}/nvim/runtime/ftplugin/chicken.vim
 %{_datadir}/nvim/runtime/ftplugin/clojure.vim
 %{_datadir}/nvim/runtime/ftplugin/cmake.vim
@@ -1166,6 +1167,7 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/syntax/change.vim
 %{_datadir}/nvim/runtime/syntax/changelog.vim
 %{_datadir}/nvim/runtime/syntax/chaskell.vim
+%{_datadir}/nvim/runtime/syntax/checkhealth.vim
 %{_datadir}/nvim/runtime/syntax/cheetah.vim
 %{_datadir}/nvim/runtime/syntax/chicken.vim
 %{_datadir}/nvim/runtime/syntax/chill.vim
@@ -1754,6 +1756,9 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Sat Jan 01 2022 Andreas Schneider <asn@redhat.com> - 0.6.1-1
+- Update to version 0.6.1
+
 * Wed Dec 01 2021 Andreas Schneider <asn@redhat.com> - 0.6.0-1
 - Update to version 0.6.0
 

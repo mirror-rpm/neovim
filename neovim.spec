@@ -33,6 +33,8 @@ Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{v
 Source1:        sysinit.vim
 Source2:        spec-template
 
+Patch0:         neovim-libvterm-0-2-support.patch
+
 Patch1000:      neovim-lua-bit32.patch
 Patch1001:      neovim-cmake-lua-5.1.patch
 
@@ -86,6 +88,8 @@ parts of Vim, without compromise, and more.
 
 %prep
 %setup -q
+
+%patch0 -p1
 
 %if %{without luajit}
 %patch1000 -p1

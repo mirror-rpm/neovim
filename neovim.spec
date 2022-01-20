@@ -23,7 +23,7 @@
 
 Name:           neovim
 Version:        0.6.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -1760,6 +1760,9 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.6.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
 * Sat Jan 01 2022 Andreas Schneider <asn@redhat.com> - 0.6.1-1
 - Update to version 0.6.1
 

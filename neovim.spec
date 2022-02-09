@@ -23,7 +23,7 @@
 
 Name:           neovim
 Version:        0.6.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -33,7 +33,8 @@ Source0:        https://github.com/neovim/neovim/archive/v%{version}/%{name}-%{v
 Source1:        sysinit.vim
 Source2:        spec-template
 
-Patch0:         neovim-libvterm-0-2-support.patch
+Patch0:         neovim-libvterm-vterm_output_set_callback.patch
+Patch1:         neovim-libvterm-0-2-support.patch
 
 Patch1000:      neovim-lua-bit32.patch
 Patch1001:      neovim-cmake-lua-5.1.patch
@@ -68,7 +69,7 @@ BuildRequires:  jemalloc-devel
 BuildRequires:  msgpack-devel >= 3.1.0
 BuildRequires:  libtermkey-devel
 BuildRequires:  libuv-devel >= 1.42.0
-BuildRequires:  libvterm-devel >= 0.1.4
+BuildRequires:  libvterm-devel >= 0.2
 BuildRequires:  unibilium-devel
 BuildRequires:  libtree-sitter-devel >= 0.20.0
 Suggests:       (python2-neovim if python2)
@@ -90,6 +91,7 @@ parts of Vim, without compromise, and more.
 %setup -q
 
 %patch0 -p1
+%patch1 -p1
 
 %if %{without luajit}
 %patch1000 -p1
@@ -1760,6 +1762,9 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Wed Feb 09 2022 Andreas Schneider <asn@redhat.com> - 0.6.1-3
+- Fix libvterm 0.2 support
+
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.6.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 

@@ -1,8 +1,24 @@
+%if 0%{?el8}
+# see https://fedoraproject.org/wiki/Changes/CMake_to_do_out-of-source_builds
+# EPEL 8's %%cmake defaults to in-source build, which neovim does not support
+%undefine __cmake_in_source_build
+%endif
+
 %bcond_with jemalloc
-%ifarch %{arm} %{ix86} x86_64 %{mips} aarch64
-%bcond_without luajit
+%ifarch %{arm} %{ix86} x86_64 %{mips}
+  %bcond_without luajit
 %else
-%bcond_with luajit
+  %ifarch aarch64
+    %if 0%{?el8}
+      # luajit codepath buggy on el8 aarch64
+      # https://bugzilla.redhat.com/show_bug.cgi?id=2065340
+      %bcond_with luajit
+    %else
+      %bcond_without luajit
+    %endif
+  %else
+    %bcond_with luajit
+  %endif
 %endif
 
 %global luv_min_ver 1.42.0
@@ -23,7 +39,7 @@
 
 Name:           neovim
 Version:        0.6.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 License:        ASL 2.0
 Summary:        Vim-fork focused on extensibility and agility
@@ -1762,6 +1778,9 @@ find %{buildroot}%{_datadir} \( -name "*.bat" -o -name "*.awk" \) \
 %{_datadir}/nvim/runtime/tutor/en/vim-01-beginner.tutor.json
 
 %changelog
+* Thu Mar 17 2022 Michel Alexandre Salim <salimma@fedoraproject.org> - 0.6.1-4
+- Support building on EPEL 8
+
 * Wed Feb 09 2022 Andreas Schneider <asn@redhat.com> - 0.6.1-3
 - Fix libvterm 0.2 support
 

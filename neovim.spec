@@ -85,6 +85,8 @@ BuildRequires:  msgpack-devel >= 3.1.0
 BuildRequires:  libtermkey-devel
 BuildRequires:  libuv-devel >= 1.42.0
 BuildRequires:  libvterm-devel >= 0.2
+# need the build with the fix for the resize buffer issue
+Requires:       libvterm >= 0.2-3
 BuildRequires:  unibilium-devel
 BuildRequires:  libtree-sitter-devel >= 0.20.0
 Suggests:       (python2-neovim if python2)
